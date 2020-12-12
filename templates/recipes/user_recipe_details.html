@@ -1,0 +1,133 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+  <h1 class="my-4 font-weight-bold">{{ recipe.recipe_title }}</h1>
+
+  <!-- Recipe Item Row -->
+  <div class="row">
+    <div class="col-md-8">
+      {% if recipe.servings %}
+      <p><b class="font-weight-bold">Serves :</b> {{ recipe.servings }}</p>
+      <p>
+        <b class="font-weight-bold">Prep Time :</b> {{ recipe.preparationMinutes
+        }} mins
+      </p>
+      <p>
+        <b class="font-weight-bold">Cook Time :</b> {{ recipe.cookingMinutes }}
+        mins
+      </p>
+      {% endif %}
+      <p>
+        {% for h in hashtags %}
+        <span class="badge badge-pill badge-danger font-weight-bold p-1"
+          >#{{ h }}
+        </span>
+        {% endfor %}
+      </p>
+      {% if recipe.recipe_image %}
+      <img class="img-fluid" src="{{ recipe.recipe_image }}" alt="" width="800px" />
+      {% else %}
+      <img src="https://sterling.com/wp-content/themes/Sterling/images/no-image-found-360x260.png" alt="" class="img-fluid" width="800px">
+      {% endif %}
+      <form>
+        {% if already_liked %}
+        <button
+          formmethod="POST"
+          formaction="/recipe/{{ recipe.id }}/unlike"
+          class="btn btn-danger btn-circle"
+        >
+          <i class="far fa-heart"></i>
+        </button>
+        {% else %}
+        <button
+          formmethod="POST"
+          formaction="/recipe/{{ recipe.id }}/like"
+          class="btn btn-outline-danger btn-circle"
+        >
+          <i class="far fa-heart"></i>
+        </button>
+        {% endif %}
+      </form>
+    </div>
+    <div class="col-md-4">
+      <!-- Instructions and Ingredients -->
+      <h3 class="my-3 font-weight-bold">Instructions</h3>
+      {% if recipe.recipe_instructions %}
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ recipe.recipe_instructions }}</li>
+      </ul>
+      {% else %}
+      <p>&#128577; Sorry we couldn't find instructions for this recipe.</p>
+      {% endif %}
+      <h3 class="my-3 font-weight-bold">Ingredients</h3>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">{{ recipe.recipe_ingredients }}</li>
+      </ul>
+      <!-- End Instructions and Ingredients -->
+    </div>
+  </div>
+
+  <!-- Comments Row  -->
+  <div class="row">
+    <div class="col-md-8">
+      <div class="page-header mb-2">
+        <h3 class="font-weight-bold">
+          <small class="float-right"
+            >{{ all_comments | length }} comments</small
+          >
+          Comments
+        </h3>
+      </div>
+      <!-- Comment Form -->
+      <div class="form-group my-3">
+        <form
+          action="/recipe/{{ recipe.id }}/comment"
+          method="POST"
+          class="media mb-2 md-form"
+        >
+          <img
+            src="{{ g.user.image_url }}"
+            alt=""
+            class="mr-2 rounded-circle"
+            style="width: 40px; height: 40px"
+          />
+          <div class="media-body input-group-append">
+            <h5 class="mt-0 mb-1 user_name">{{ g.user.username }}</h5>
+            <input
+              type="text"
+              name="comment"
+              placeholder="Add a public comment.."
+              class="border-0 border-bottom form-control"
+            />
+            <span>
+              <button type="submit" class="btn btn-elegant float-right btn-sm">
+                Post
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+      <!--  End of Comment Form -->
+      <ul class="list-unstyled">
+        {% for c in all_comments %}
+        <li class="media border-bottom my-3">
+          <img
+            src="{{ c.posted_by.image_url }}"
+            class="mr-2 rounded-circle"
+            style="width: 40px; height: 40px"
+          />
+          <div class="media-body">
+            <h5 class="mt-0 mb-1 user_name">{{ c.posted_by.username }}</h5>
+            {{ c.comment }}
+          </div>
+          <small class="float-right">{{ c.timestamp }}</small>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- /.container -->
+  <script src="../../static/JS/recipe_details.js"></script>
+</div>
+{% endblock %}

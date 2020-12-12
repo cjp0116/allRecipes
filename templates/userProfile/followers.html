@@ -1,0 +1,43 @@
+{% extends "/userProfile/user.html" %} {% block followers %} {% if not followers
+| length %}
+<h5 class="text-center">You don't have any followers</h5>
+{% else %}
+<h5 class="text-center">Followers</h5>
+{% endif %}
+
+{% for f in followers %}
+<div class="row">
+  <div class="col-md-3 mb-2">
+    <div class="card">
+      <div class="text-center card-box">
+        <div class="member-card pt-2 pb-2">
+          <div class="thumb-lg member-thumb mx-auto">
+            <img
+              src="{{ f.image_url }}"
+              class="rounded-circle img-thumbnail"
+              alt="profile-image"
+              style="width : 10rem;"
+            />
+          </div>
+          <div class="">
+            <h4>{{ f.username }}</h4>
+            <p class="text-muted">
+              @Founder <span>| </span
+              ><span><a href="#" class="text-pink">{{ f.email }}</a></span>
+            </p>
+          </div>
+          <a
+            type="button"
+            class="btn btn-primary mt-3 btn-rounded waves-effect w-md waves-light"
+            href="/profile/{{ f.id }}"
+          >
+            See Profile
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "/userProfile/user.html" %}
+{% block my_posts %}
+
+{% if not my_posts | length %}
+  <h5 class="text-center">You haven't posted any recipes</h5>
+  {% else %}
+  <h5 class="text-center">My Posts</h5>
+{% endif %}
+<div class="row">
+{% for p in my_posts %}
+<div class="col-md-3 my-2">
+  <div class="card card-cascade" style="width : 260px">
+    <!-- Card image -->
+    <div class="view view-cascade overlay">
+      {% if p.image %}
+      <img class="card-img-top" src="{{ p.image }}" alt="Card image cap">
+      {% endif %}
+      {% if p.recipe_image %}
+      <img src="{{ p.recipe_image }}" alt="" class="card-img-top">
+      {% else %}
+      <img src="https://sterling.com/wp-content/themes/Sterling/images/no-image-found-360x260.png" alt="" class="card-img-top">
+      {% endif %}
+      <a>
+        <div class="mask rgba-white-slight"></div>
+      </a>
+    </div>
+  
+    <!-- Card content -->
+    <div class="card-body card-body-cascade text-center">
+      <!-- Label -->
+      <h5 class="pink-text pb-2 pt-1"><i class="fas fa-utensils"></i> Culinary</h5>
+      <!-- Title -->
+      <h4 class="card-title"><strong>{{ p.title }}</strong></h4>
+      <h4 class="card-title"><strong>{{ p.recipe_title }}</strong></h4>
+      <!-- Subtitle -->
+      <!-- <h6 class="font-weight-bold indigo-text py-2">Web developer</h6> -->
+      <!-- Text -->
+      <p class="card-text">
+        <i class="fas fa-clock fa-lg"></i> Ready in {{ p.readyInMinutes }} Minutes
+      </p>
+      <a class="btn btn-danger" href="/recipe/{{ p.id }}" style="color:white">See More</a>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+
+{% endblock %}

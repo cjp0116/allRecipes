@@ -1,0 +1,330 @@
+{% extends 'base.html' %} {% block title %} Home {% endblock %} {% block
+content%}
+<!-- Jumbotron Start -->
+<div class="row">
+  <div class="jumbotron-fluid">
+    <form action="" class="jumbotron-search-form md-form">
+      <div class="input-group text-center">
+        <div class="input-group-append main-search">
+          <input
+            type="text"
+            class="form-control"
+            type="search"
+            placeholder="Find Recipes"
+            id="search"
+            name="q"
+          />
+          <button type="submit" class="btn btn-danger btn-sm">
+            <span class="fa fa-search"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <p class="jumbotron-text">
+      <a href="/recipe-post" class="font-weight-bold">Or post your own recipe</a>
+    </p>
+    <h5 class="text-center lead text-dark">Recipe of today</h5>
+    <ul class="carouselNav__list recipeCarousel__list">
+      {% for recipe in recipes %}
+      <li class="carouselNav__listItem recipeCarousel__listItem">
+        <a
+          href="/recipe/{{ recipe.id }}"
+          class="carouselNav__link recipeCarousel__link"
+        >
+          <div class="inner-container">
+            {% if recipe.image %}
+            <img
+              src="{{ recipe.image }}"
+              alt="{{ recipe.image }}'s picture"
+              class="carouselNav__image"
+            />
+            {% else %}
+            <img
+              src="https://spoonacular.com/recipeImages/523553-556x370.jpg"
+              alt="{{ recipe.image }}'s picture"
+              class="carouselNav__image"
+            />
+            {% endif %}
+          </div>
+          <div class="carouselNav__linkText">{{ recipe.title }}</div>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<!-- Jumbotron End -->
+
+<!-- Holiday Specials Start -->
+<section class="page-section-one container">
+  <div class="row d-flex justify-content-space-between">
+    <div class="col-md-2">
+      <div class="row">
+          <div class="card card-cascade" style="width : 316px">
+            <div class="view view-cascade overlay">
+              <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2020%2F12%2F11%2F1569442_original.jpg&w=316&h=211&c=sc&poi=%5B451%2C489%5D&q=85" alt="" class="card-img-top">
+            </div>
+            <div class="card-body card-body-cascade">
+              <h4 class="card-title">
+                <a href="https://www.allrecipes.com/recipes/190/holidays-and-events/hanukkah">
+                  <strong>Our Complete Collection of Hanukkah Recipes</strong>
+                </a>
+              </h4>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="card card-cascade" style="width : 316px">
+          <div class="view view-cascade overlay">
+            <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2020%2F10%2F20%2Ffood-gifts-for-kids-2000.jpg&w=316&h=211&c=sc&poi=%5B900%2C624%5D&q=85" alt="" class="card-img-top">
+          </div>
+          <div class="card-body card-body-cascade">
+            <h4 class="card-title">
+              <a href="https://www.allrecipes.com/food-news-trends/gift-guides/">
+                <strong>Check Out Our Collection of Gift Guides</strong>
+              </a>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="card card-cascade" style="width : 640px">
+        <div class="view view-cascade overlay">
+          <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2015%2F01%2F3213063.jpg&w=640&h=428&c=sc&poi=%5B325%2C232%5D&q=85" alt="" class="card-img-top">
+        </div>
+        <div class="card-body card-body-cascade">
+          <h4 class="card-title">
+            <a href="https://www.allrecipes.com/recipes/948/holidays-and-events/christmas/breakfast-and-brunch/">
+              <strong>Holly Jolly Breakfast Ideas</strong>
+            </a>
+          </h4>
+          <p class="card-text">Eggnog pancakes, gingerbread waffles, panettone French toast, ham and cheese breakfast casserole: find five-star recipes to fuel your holiday fun.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card card-cascade" style="width : 300px">
+        <div class="card-body card-body-cascade">
+          <h4 class="card-title text-center font-weight-bold">Most Popular</h4>
+          <ul class="list-group list-group-flush">
+
+            <li class="list-group-item">
+              <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2019%2F12%2F56547.jpg&w=80&h=80&c=sc&poi=%5B528%2C297%5D&q=85" alt="" class="rounded-circle" width="35px">
+              <a href="https://www.allrecipes.com/gallery/top-holiday-cookies/">Our Top 20 Christmas Cookies</a>
+            </li>
+            
+            <li class="list-group-item">
+              <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2020%2F12%2F05%2F6172968_original.jpg&w=80&h=80&c=sc&poi=face&q=85" alt="" class="rounded-circle" width="35px">
+              <a href="https://www.allrecipes.com/recipes/859/desserts/cookies/sugar-cookies">Sugar Cookie and Icing Recipes</a>
+            </li>
+            
+            <li class="list-group-item">
+              <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F4462051.jpg&w=80&h=80&c=sc&poi=face&q=85" alt="" class="rounded-circle" width="35px">
+              <a href="https://www.allrecipes.com/recipe/10813/best-chocolate-chip-cookies">Best Chocolate Chip Cookies</a>
+            </li>
+            
+            <li class="list-group-item">
+              <img src="https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F43%2F2020%2F12%2F04%2F797850_original-2000.jpg&w=80&h=80&c=sc&poi=face&q=85" alt="" class="rounded-circle" width="35px">
+              <a href="https://www.allrecipes.com/recipe/24043/cookie-balls">Oreo® Cookie Balls</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Holiday Specials End -->
+
+<!-- Start of breakfast -->
+<section class="page-section-two mb-5" id="breakfast">
+  <div class="breakfast-header-img">
+    <div class="breakfast-header-description">
+      <div class="card food-description-card">
+        <div class="card-body">
+          <h3 class="card-title font-weight-bold">Breakfast</h5>
+          <p class="card-text">
+            Allrecipes has the best recipes for breakfast, and tips to help you fuel your day.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Breakfast Cards -->
+  <div class="row food-section-container">
+    {% for r in breakfast %}
+    <div class="col-md-3">
+      <div class="card card-cascade" style="width : 260px">
+        <!-- Card image -->
+        <div class="view view-cascade overlay">
+          <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap" height="260px">
+          <form>
+            <div class="mask rgba-red-light">
+              {% if already_liked %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% else %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center">
+          <!-- Label -->
+          <h5 class="pink-text pb-2 pt-1"><i class="fas fa-utensils"></i> Culinary</h5>
+          <!-- Title -->
+          <h4 class="card-title"><strong>{{ r.title }}</strong></h4>
+          <!-- Subtitle -->
+          <!-- <h6 class="font-weight-bold indigo-text py-2">Web developer</h6> -->
+          <!-- Text -->
+          <p class="card-text">
+            <i class="fas fa-clock fa-lg"></i> Ready in {{ r.readyInMinutes }} Minutes
+          </p>
+          <a class="btn btn-danger" href="/recipe/{{ r.id }}" style="color:white">See More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- End of breakfast cards -->
+</section>
+<!-- End of breakfast -->
+
+<!-- Start of lunch section -->
+<section class="mt-5" id="lunch">
+  <div class="lunch-header-img">
+    <div class="breakfast-header-description">
+      <div class="card food-description-card">
+        <div class="card-body">
+          <h3 class="card-title font-weight-bold">Lunch</h5>
+          <p class="card-text">
+            All Recipes got you covered for your lunch as well
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Lunch Cards -->
+  <div class="row food-section-container">
+    {% for r in lunch %}
+    <div class="col-md-3">
+      <div class="card card-cascade" style="width : 260px">
+        <!-- Card image -->
+        <div class="view view-cascade overlay">
+          <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap"  height="260px">
+          <form>
+            <div class="mask rgba-red-light">
+              {% if already_liked %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% else %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center">
+          <!-- Label -->
+          <h5 class="pink-text pb-2 pt-1"><i class="fas fa-utensils"></i> Culinary</h5>
+          <!-- Title -->
+          <h4 class="card-title"><strong>{{ r.title }}</strong></h4>
+          <!-- Subtitle -->
+          <!-- <h6 class="font-weight-bold indigo-text py-2">Web developer</h6> -->
+          <!-- Text -->
+          <p class="card-text">
+            <i class="fas fa-clock fa-lg"></i> Ready in {{ r.readyInMinutes }} Minutes
+          </p>
+          <a class="btn btn-danger" href="/recipe/{{ r.id }}" style="color:white">See More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- End Lunch cards -->
+</section>
+<!-- End of Lunch section -->
+
+<!-- Start of dinner section -->
+<section class="mt-5" id="dinner">
+  <div class="dinner-header-img">
+    <div class="breakfast-header-description">
+      <div class="card food-description-card">
+        <div class="card-body">
+          <h3 class="card-title font-weight-bold">Dinner</h5>
+          <p class="card-text">
+            From romantic dinners to casual lazy comfort foods
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dinner Cards -->
+  <div class="row food-section-container">
+    {% for r in dinner %}
+    <div class="col-md-3">
+      <div class="card card-cascade" style="width : 260px">
+        <!-- Card image -->
+        <div class="view view-cascade overlay">
+          <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap"  height="260px">
+          <form>
+            <div class="mask rgba-red-light">
+              {% if already_liked %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% else %}
+              <button 
+              class="btn btn-danger btn-circle" 
+              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                <i class="far fa-heart"></i>
+              </button>
+              {% endif %}
+            </div>
+          </form>
+        </div>
+      
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center">
+          <!-- Label -->
+          <h5 class="pink-text pb-2 pt-1"><i class="fas fa-utensils"></i> Culinary</h5>
+          <!-- Title -->
+          <h4 class="card-title"><strong>{{ r.title }}</strong></h4>
+          <!-- Subtitle -->
+          <!-- <h6 class="font-weight-bold indigo-text py-2">Web developer</h6> -->
+          <!-- Text -->
+          <p class="card-text">
+            <i class="fas fa-clock fa-lg"></i> Ready in {{ r.readyInMinutes }} Minutes
+          </p>
+          <a class="btn btn-danger" href="/recipe/{{ r.id }}" style="color:white">See More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+<!-- End of dinner section -->
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %}Recipe Posts{% endblock %} {% block
+content %}
+<form method="POST" class="container mt-5">
+  <div class="form-group">
+    <label for="recipe_title" class="font-weight-bold">Name of Recipe</label>
+    <input
+      type="text"
+      class="form-control"
+      name="recipe_title"
+      id="recipe_title"
+    />
+  </div>
+  <div class="form-group">
+    <label for="recipe_ingredients" class="font-weight-bold">Ingredients</label>
+    <input
+      type="text"
+      class="form-control"
+      name="recipe_ingredients"
+      id="recipe_ingredients"
+      placeholder="4 strips of bacon, 3 jalapenos, chicken"
+    />
+    <small id="recipe_ingredients_help"
+      >Please put the ingredients in comma separated values.</small
+    >
+  </div>
+  <div class="form-group">
+    <label for="recipe_instructions" class="font-weight-bold">Directions</label>
+    <textarea
+      name="recipe_instructions"
+      id="recipe_instructions"
+      cols="30"
+      rows="10"
+      class="form-control"
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label class="font-weight-bold">Photo URL (optional)</label>
+    
+    <!-- <div class="input-group mb-2 mr-sm-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text">Choose File</div>
+      </div>
+      <input type="file" class="form-control" id="recipe_photos" plac eholder="Upload photos">
+    </div>  -->
+      <input
+      type="text"
+      class="form-control"
+      id="recipe_photos"
+      name="recipe_photos"
+      placeholder="Photo URL"
+      />
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Submit</button>
+  </div>
+</form>
+{% endblock %}

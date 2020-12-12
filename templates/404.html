@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mt-5">
+<!--   <div class="card m-auto">
+    <div class="card-body">
+      <h1 class="display-4 font-weight-bold">404</h1>
+      <p class="card-text">
+        Oops.. You just found an error page..
+      </p>
+      <small>We are sorry but our service is currently not available..</small>
+      <a href="/" class="btn btn-danger">
+        <i class="fas fa-arrow-left"></i> Go Back
+      </a>
+    </div>
+  </div> -->
+  <div class="card border border-0 ml-5">
+    <div class="card-body">
+      <h1 class="display-3 font-weight-bold text-danger">
+        <span>4</span>
+        <span class="fa-stack fa-1x fa-spin" style="font-size: 2rem;">
+            <i class='fas fa-circle fa-stack-2x'></i>
+            <i class='fas fa-utensil-spoon fa-stack-1x fa-inverse'></i>
+        </span>
+        <span>4</span>
+      </h1>
+      <p class="card-text" style="font-size: 2.5rem;">
+        Oops! We ran out of ingredients
+      </p>
+      <p class="card-text" style="font-size: 2rem">
+        The page you are looking for is stil being cooked.
+      </p>
+      <a href="/" class="btn btn-outline-danger btn-rounded waves-effect">
+        <i class="fas fa-arrow-left"></i> Go Back
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

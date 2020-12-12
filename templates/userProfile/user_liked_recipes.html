@@ -1,0 +1,39 @@
+{% extends 'userProfile/user.html' %} {% block liked_recipes %}
+<div class="my-5">
+  {% if not liked_recipes | length %}
+  <h5 class="text-center">You don't have any liked recipes</h5>
+  {% else %}
+  <h5 class="text-center">My Liked Recipes</h5>
+  {% endif %} 
+</div>
+<div class="row">
+  {% for p in liked_recipes %}
+  <div class="col-md-3">
+    <div class="card card-cascade" style="width : 260px">
+      <!-- Card image -->
+      <div class="view view-cascade overlay">
+        <img class="card-img-top" src="{{ p.image }}" alt="Card image cap">
+        <a>
+          <div class="mask rgba-white-slight"></div>
+        </a>
+      </div>
+    
+      <!-- Card content -->
+      <div class="card-body card-body-cascade text-center">
+        <!-- Label -->
+        <h5 class="pink-text pb-2 pt-1"><i class="fas fa-utensils"></i> Culinary</h5>
+        <!-- Title -->
+        <h4 class="card-title"><strong>{{ p.title }}</strong></h4>
+        <!-- Subtitle -->
+        <!-- <h6 class="font-weight-bold indigo-text py-2">Web developer</h6> -->
+        <!-- Text -->
+        <p class="card-text">
+          <i class="fas fa-clock fa-lg"></i> Ready in {{ p.readyInMinutes }} Minutes
+        </p>
+        <a class="btn btn-danger" href="/recipe/{{ p.id }}" style="color:white">See More</a>
+      </div>
+    </div>
+  </div>
+{% endfor %} 
+</div>
+{% endblock %}

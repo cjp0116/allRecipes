@@ -1,0 +1,66 @@
+{% extends 'base.html' %} {% block title %}Login{% endblock %} 
+{% block content%}
+
+  <!-- Material form login -->
+  <div class="card mx-auto mt-5" style="width : 50rem;">
+    <h5 class="card-header white-text text-center py-4"  style="background-color : rgba(255, 69, 0, 1);">
+      <strong>Register</strong>
+    </h5>
+    <!--Card content-->
+    <div class="card-body px-lg-5 pt-0">
+      <!-- Form -->
+      <form class="text-center" style="color: #757575;" action="/register" method='POST'>
+        <!-- Username -->
+        <div class="md-form">
+          <input type="text" id="username" class="form-control" name="username" required>
+          <label for="username">Username</label>
+        </div>
+        <!-- Email -->
+        <div class="md-form">
+          <input type="email" id="email" class="form-control" name="email" required>
+          <label for="email">Email</label>
+        </div>
+
+        <!-- Password -->
+        <div class="md-form">
+          <input type="password" id="password" class="form-control" name="password" required>
+          <label for="password">Password</label>
+        </div>
+        <!-- Bio -->
+        <div class="md-form">
+          <input type="text" id="bio" class="form-control" name="bio">
+          <label for="bio">Bio (Optional)</label>
+        </div>
+
+  
+        <!-- Sign in button -->
+        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0 mt-5" type="submit">Register</button>
+  
+        <!-- Register -->
+        <p>Not a member?
+          <a href="/register">Register</a>
+        </p>
+  
+        <!-- Social login -->
+        <p>or sign in with:</p>
+        <a type="button" class="btn-floating btn-fb btn-sm btn-danger">
+          <i class="fab fa-facebook-f" style="color : white"></i>
+        </a>
+        <a type="button" class="btn-floating btn-tw btn-sm btn-danger">
+          <i class="fab fa-twitter" style="color : white"></i>
+        </a>
+        <a type="button" class="btn-floating btn-li btn-sm btn-danger">
+          <i class="fab fa-linkedin-in" style="color : white"></i>
+        </a>
+        <a type="button" class="btn-floating btn-git btn-sm btn-danger">
+          <i class="fab fa-github" style="color : white"></i>
+        </a>
+  
+      </form>
+      <!-- Form -->
+  
+    </div>
+  
+  </div>
+  <!-- Material form login -->
+{% endblock %}
