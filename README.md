@@ -2,6 +2,8 @@
 - Search between numerous recipes, or even post your own!
 - You may like, comment on recipes.
 - Follow other users' see what kind of recipes they posted! 
+- Some routes requires authentication. So register first
+
   ## Requirements
   1. Install required packages `pip install -r requirements.txt`
   2. You need to have postgresql installed for this to work.
