@@ -163,18 +163,18 @@ content%}
           <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap" height="260px">
           <form>
             <div class="mask rgba-red-light">
-              {% if already_liked %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+              {% if r.id in liked_ids %}
+                <button 
+                class="btn btn-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% else %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+                <button 
+                class="btn btn-outline-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% endif %}
             </div>
           </form>
@@ -226,18 +226,18 @@ content%}
           <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap"  height="260px">
           <form>
             <div class="mask rgba-red-light">
-              {% if already_liked %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+              {% if r.id in liked_ids %}
+                <button 
+                class="btn btn-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% else %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+                <button 
+                class="btn btn-outline-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% endif %}
             </div>
           </form>
@@ -290,18 +290,18 @@ content%}
           <img class="card-img-top" src="{{ imageUri }}{{ r.image }}" alt="Card image cap"  height="260px">
           <form>
             <div class="mask rgba-red-light">
-              {% if already_liked %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+              {% if r.id in liked_ids %}
+                <button 
+                class="btn btn-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/unlike" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% else %}
-              <button 
-              class="btn btn-danger btn-circle" 
-              formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
-                <i class="far fa-heart"></i>
-              </button>
+                <button 
+                class="btn btn-outline-danger btn-circle" 
+                formaction="/recipe/{{ r.id }}/like" formmethod="POST" style="color : white;" >
+                  <i class="far fa-heart"></i>
+                </button>
               {% endif %}
             </div>
           </form>
