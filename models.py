@@ -79,7 +79,7 @@ class User_Recipe_Post(db.Model):
     recipe_instructions = db.Column(db.Text, nullable=False)
 
     external_id = db.Column(db.Integer)
-    recipe_image = db.Column(db.Text)
+    recipe_image = db.Column(db.Text, default="https://sterling.com/wp-content/themes/Sterling/images/no-image-found-360x260.png")
     comments = db.relationship("Comment")
     likes = db.relationship("Like")
     def __repr__(self):
@@ -97,6 +97,8 @@ class Comment(db.Model):
         nullable=False,
         default=datetime.utcnow()
     )
+    external_id = db.Column(db.Integer)
+
     recipe_post_id = db.Column(
         db.Integer,
         db.ForeignKey('user_recipe_posts.id', ondelete="cascade"))
@@ -113,7 +115,7 @@ class Like(db.Model):
     user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id', ondelete="cascade"))
-
+    external_id = db.Column(db.Integer)
     user_posted_recipe_post_id = db.Column(
         db.Integer,
         db.ForeignKey('user_recipe_posts.id', ondelete="cascade"))

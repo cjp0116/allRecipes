@@ -154,9 +154,14 @@ def user_liked_recipes(id):
         return do_search(search)
     user = User.query.get_or_404(id)
     liked_recipes = Like.query.filter(Like.user_id == user.id).all()
-    recipe_ids = [l.user_posted_recipe_post_id for l in liked_recipes]
+    recipe_ids = [l.external_id for l in liked_recipes]
     my_liked_recipes = SpoonacularAPI.get_recipe_info_bulk(recipe_ids)
-    return render_template("/userProfile/user_liked_recipes.html", liked_recipes=my_liked_recipes, user=user)
+
+    user_liked_ids =  [l.user_posted_recipe_post_id for l in Like.query.filter(Like.user_id == user.id, Like.external_id == None ).all()]
+    user_posted_recipe_likes = User_Recipe_Post.query.filter(User_Recipe_Post.id.in_(user_liked_ids)).all()
+    print(user_posted_recipe_likes)
+    
+    return render_template("/userProfile/user_liked_recipes.html", liked_recipes=my_liked_recipes, user=user, user_recipes=user_posted_recipe_likes)
 
 
 @app.route("/profile/<int:id>/followers", methods=['GET'])
@@ -220,8 +225,7 @@ def do_search(term):
     if g.user:
         likes = Like.query.filter(Like.user_id == g.user.id).all()
         curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes]
-        already_liked = any( id in curr_user_liked_recipe_ids for id in result_ids )
-        return render_template("/recipes/search_results.html", results=search_results, search=term, already_liked=already_liked)
+        return render_template("/recipes/search_results.html", results=search_results, search=term, liked_ids=curr_user_liked_recipe_ids)
     else:
         return render_template("/recipes/search_results.html", results=search_results, search=term, already_liked=False)
 
@@ -244,10 +248,9 @@ def homepage():
     dinner_results = dinner['results']
     try:
         likes = Like.query.filter(Like.user_id == g.user.id).all()
-        curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes]
-        all_ids = [a['id'] for a in breakfast_results + lunch_results + dinner_results]
-        already_liked = any(id in curr_user_liked_recipe_ids for id in all_ids)
-        return render_template('home.html', recipes=recipes, breakfast=breakfast_results, imageUri=image_base_uri, lunch=lunch_results, dinner=dinner_results, already_liked=already_liked)
+        curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes] + [like.external_id for like in likes]
+
+        return render_template('home.html', recipes=recipes, breakfast=breakfast_results, imageUri=image_base_uri, lunch=lunch_results, dinner=dinner_results, liked_ids=curr_user_liked_recipe_ids)
     except:
         return render_template("home.html", recipes=recipes, breakfast=breakfast_results, imageUri=image_base_uri, lunch=lunch_results, dinner=dinner_results)
 
@@ -285,11 +288,11 @@ def get_recipe_details(id):
             add_api_recipe_posts_to_dummyAPI_user(id, recipeObj=recipe)
 
         likes = Like.query.filter(Like.user_id == g.user.id).all()
-        curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes]
+        curr_user_liked_recipe_ids = [like.external_id for like in likes]
         already_liked = True if curr_user_liked_recipe_ids.count(id) > 0 else False
 
         hashtags = recipe['dishTypes']
-        all_comments = Comment.query.filter(Comment.recipe_post_id == id).all()
+        all_comments = Comment.query.filter(Comment.external_id == id).all()
 
         ingredients_base_url = 'https://spoonacular.com/cdn/ingredients_100x100/'
         recipes_base_url = 'https://spoonacular.com/recipeImages/'
@@ -311,23 +314,37 @@ def like_recipe(id):
     if not g.user:
         flash("Sign in first", "danger")
         return redirect("/login")
-    like = Like(user_id=g.user.id, user_posted_recipe_post_id=id)
-    db.session.add(like)
-    db.session.commit()
-    flash("Added this recipe to your likes", "success")
-    return redirect(f"/recipe/{id}")
-
+    try:
+        like = Like(user_id=g.user.id, user_posted_recipe_post_id=id)
+        db.session.add(like)
+        db.session.commit()
+        flash("Added this recipe to your likes", "success")
+        return redirect(f"/recipe/{id}")
+    except Exception:
+        db.session.rollback()
+        like = Like(user_id=g.user.id, external_id=id)
+        db.session.add(like)
+        db.session.commit()
+        flash("Added this recipe to your likes", "success")
+        return redirect(f"/recipe/{id}")
 
 @app.route("/recipe/<int:id>/unlike", methods=['POST'])
 def unlike_recipe(id):
     if not g.user:
         flash("Sign in first", "danger")
         return redirect("/login")
-    like = Like.query.filter(Like.user_posted_recipe_post_id == id).one()
-    db.session.delete(like)
-    db.session.commit()
-    flash("Removed this recipe from your likes", "danger")
-    return redirect(f"/recipe/{id}")
+    try:
+        like = Like.query.filter(Like.user_posted_recipe_post_id == id).one()
+        db.session.delete(like)
+        db.session.commit()
+        flash("Removed this recipe from your likes", "danger")
+        return redirect(f"/recipe/{id}")
+    except Exception:
+        like = Like.query.filter(Like.external_id == id).one()
+        db.session.delete(like)
+        db.session.commit()
+        flash("Removed this recipe from your likes", "danger")
+        return redirect(f"/recipe/{id}")
 
 
 @app.route("/recipe/<int:id>/comment", methods=['POST'])
@@ -335,15 +352,27 @@ def add_comment_to_recipe(id):
     if not g.user:
         flash("Sign in first", "danger")
         return redirect("/login")
-    comment = Comment(
-        created_by=g.user.username,
-        recipe_post_id=id,
-        comment=request.form.get("comment")
-    )
-    db.session.add(comment)
-    db.session.commit()
-    flash("Added comment", "success")
-    return redirect(f"/recipe/{id}")
+    try:
+        comment = Comment(
+            created_by=g.user.username,
+            recipe_post_id=id,
+            comment=request.form.get("comment")
+        )
+        db.session.add(comment)
+        db.session.commit()
+        flash("Added comment", "success")
+        return redirect(f"/recipe/{id}")
+    except Exception:
+        db.session.rollback()
+        comment = Comment(
+            created_by=g.user.username,
+            external_id=id,
+            comment=request.form.get("comment")
+        )
+        db.session.add(comment)
+        db.session.commit()
+        flash("Added comment", "success")
+        return redirect(f"/recipe/{id}")        
 
 
 @app.errorhandler(404)

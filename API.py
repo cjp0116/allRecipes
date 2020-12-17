@@ -15,7 +15,7 @@ class SpoonacularAPI:
     @classmethod
     def make_request(cls, querystring, method='GET'):
         BASE_URL = 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes'
-        res = requests.request(method, BASE_URL, headers=headers)
+        res = requests.request(method, BASE_URL,  headers=headers)
         return json.loads(res.text)
 
     @classmethod
@@ -57,7 +57,7 @@ class SpoonacularAPI:
     @classmethod
     def get_recipe_detail_by_id(cls, id):
         url = f"https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/{id}/information"
-        res = requests.request('GET', url, headers=headers)
+        res = requests.request('GET', url, headers=headers) 
         return json.loads(res.text)
 
     @classmethod
@@ -73,7 +73,8 @@ class SpoonacularAPI:
             return []
         qString = ""
         for id in ids:
-            qString += str(id) + ","
+            if id:
+                qString += str(id) + ","
         querystring = {"ids": qString[:-1]}
         url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/informationBulk"
         res = requests.request('GET', url, headers=headers,
