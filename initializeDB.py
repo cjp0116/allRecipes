@@ -1,2 +1,2 @@
-import setUp from app
+from app import setUp
 setUp()
