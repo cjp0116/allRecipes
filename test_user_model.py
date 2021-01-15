@@ -32,7 +32,7 @@ class UserModelTestCase(TestCase):
 
         self.assertEqual(len(u.followers), 0)
         self.assertEqual(len(u.following), 0)
-        self.assertEqual(len(u.user_posted_likes), 0)
+        self.assertEqual(len(u.api_posted_likes), 0)
 
     def test_user_follows(self):
         self.u1.following.append(self.u2)
@@ -86,4 +86,5 @@ class UserModelTestCase(TestCase):
     def test_invalid_authentication(self):
         self.assertFalse(User.authenticate("not the right username", "something"))
         self.assertFalse(User.authenticate(self.u1.username, "not the correct pw"))
+
     
