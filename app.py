@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 toolbar = DebugToolbarExtension(app)
 
 
-# connect_db(app)
+connect_db(app)
 
 
 def setUp():
@@ -391,4 +391,3 @@ def add_api_recipe_posts_to_dummyAPI_user(apiPostID, recipeObj):
     )
     db.session.merge(recipe_post)
     db.session.commit()
-
