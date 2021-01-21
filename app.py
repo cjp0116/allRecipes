@@ -12,7 +12,7 @@ CURR_USER_KEY = 'curr_user'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABSE_URL', 'postgres:///recipes'))
+    os.environ.get('DATABASE_URL', 'postgres:///recipes'))
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "seomthing")
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 toolbar = DebugToolbarExtension(app)
 
 
-connect_db(app)
+# connect_db(app)
 
 
 def setUp():
@@ -58,11 +58,11 @@ def signup():
     if search:
         return do_search(search)
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        email = request.form.get('email')
-        bio = request.form.get('bio')
         try:
+            username = request.form.get('username')
+            password = request.form.get('password')
+            email = request.form.get('email')
+            bio = request.form.get('bio')
             new_user = User.register(username, email, password)
             new_user.bio = bio
             db.session.commit()
@@ -82,10 +82,8 @@ def login():
     if search:
         return do_search(search)
     if request.method == 'POST':
-        user = User.authenticate(
-            request.form.get("username"),
-            request.form.get("password")
-        )
+        user = User.authenticate(request.form.get(
+            "username"), request.form.get("password"))
         if user:
             do_login(user)
             flash(f"Welcome {user.username}", "success")
@@ -138,16 +136,15 @@ def user_profile(id):
         return do_search(search)
     user = User.query.get_or_404(id)
     liked_recipes = Like.query.filter(Like.user_id == id).all()
-    user_posts = User_Recipe_Post.query.filter(User_Recipe_Post.created_by == user.username).all()
+    user_posts = User_Recipe_Post.query.filter( User_Recipe_Post.created_by == user.username).all()
     following_ids = [u.id for u in user.followers]
-    already_following = following_ids.count(g.user.id)
-    return render_template(
-        '/userProfile/user.html',
-        user=user,
-        liked_recipes=liked_recipes,
-        user_posts=user_posts,
-        already_following=already_following
-    )
+    already_following = True if following_ids.count(g.user.id) >= 1 else False
+    return render_template('/userProfile/user.html',
+                           user=user,
+                           liked_recipes=liked_recipes,
+                           user_posts=user_posts,
+                           already_following=already_following
+                           )
 
 
 @app.route("/profile/<int:id>/liked_recipes", methods=['GET'])
@@ -160,12 +157,10 @@ def user_liked_recipes(id):
     recipe_ids = [l.external_id for l in liked_recipes]
     my_liked_recipes = SpoonacularAPI.get_recipe_info_bulk(recipe_ids)
 
-    user_liked_ids =  [
-        l.user_posted_recipe_post_id for l in Like.query.filter(Like.user_id == user.id, Like.external_id == None).all()
-    ]
+    user_liked_ids =  [l.user_posted_recipe_post_id for l in Like.query.filter(Like.user_id == user.id, Like.external_id == None ).all()]
     user_posted_recipe_likes = User_Recipe_Post.query.filter(User_Recipe_Post.id.in_(user_liked_ids)).all()
     print(user_posted_recipe_likes)
-
+    
     return render_template("/userProfile/user_liked_recipes.html", liked_recipes=my_liked_recipes, user=user, user_recipes=user_posted_recipe_likes)
 
 
@@ -216,8 +211,7 @@ def get_user_posted_recipes(user_id):
     user = User.query.get_or_404(user_id)
     if user.username == "api":
         my_posts = User_Recipe_Post.query.filter(
-            User_Recipe_Post.created_by == user.username
-        ).all()
+            User_Recipe_Post.created_by == user.username).all()
         recipe_ids = [r.id for r in my_posts]
         posts = SpoonacularAPI.get_recipe_info_bulk(recipe_ids)
         return render_template("/userProfile/my_posted_recipes.html", user=user, my_posts=posts)
@@ -231,19 +225,9 @@ def do_search(term):
     if g.user:
         likes = Like.query.filter(Like.user_id == g.user.id).all()
         curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes]
-        return render_template(
-            "/recipes/search_results.html",
-            results=search_results,
-            search=term,
-            liked_ids=curr_user_liked_recipe_ids
-        )
+        return render_template("/recipes/search_results.html", results=search_results, search=term, liked_ids=curr_user_liked_recipe_ids)
     else:
-        return render_template(
-            "/recipes/search_results.html",
-            results=search_results,
-            search=term,
-            already_liked=False
-        )
+        return render_template("/recipes/search_results.html", results=search_results, search=term, already_liked=False)
 
 @app.route("/", methods=['GET'])
 def homepage():
@@ -266,24 +250,9 @@ def homepage():
         likes = Like.query.filter(Like.user_id == g.user.id).all()
         curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes] + [like.external_id for like in likes]
 
-        return render_template(
-            'home.html',
-            recipes=recipes,
-            breakfast=breakfast_results,
-            imageUri=image_base_uri,
-            lunch=lunch_results,
-            dinner=dinner_results,
-            liked_ids=curr_user_liked_recipe_ids
-        )
+        return render_template('home.html', recipes=recipes, breakfast=breakfast_results, imageUri=image_base_uri, lunch=lunch_results, dinner=dinner_results, liked_ids=curr_user_liked_recipe_ids)
     except:
-        return render_template(
-            "home.html",
-            recipes=recipes,
-            breakfast=breakfast_results,
-            imageUri=image_base_uri,
-            lunch=lunch_results,
-            dinner=dinner_results
-        )
+        return render_template("home.html", recipes=recipes, breakfast=breakfast_results, imageUri=image_base_uri, lunch=lunch_results, dinner=dinner_results)
 
 
 @app.route("/recipe/<int:id>", methods=['GET'])
@@ -303,14 +272,12 @@ def get_recipe_details(id):
         likes = Like.query.filter(Like.user_id == g.user.id).all()
         curr_user_liked_recipe_ids = [like.user_posted_recipe_post_id for like in likes]
         all_comments = Comment.query.filter(Comment.recipe_post_id == id).all()
-        already_liked = curr_user_liked_recipe_ids.count(id) > 0
-        return render_template(
-            "/recipes/user_recipe_details.html",
-            recipe=found_recipe,
-            already_liked=already_liked,
-            all_comments=all_comments,
-            hashtags=[]
-        )
+        already_liked = True if curr_user_liked_recipe_ids.count(id) > 0 else False
+        return render_template("/recipes/user_recipe_details.html", 
+                               recipe=found_recipe,
+                               already_liked=already_liked,
+                               all_comments=all_comments,
+                               hashtags=[])
     except Exception as e:
         print(e)
         dummy_api_user = User.query.get(1)
@@ -322,7 +289,7 @@ def get_recipe_details(id):
 
         likes = Like.query.filter(Like.user_id == g.user.id).all()
         curr_user_liked_recipe_ids = [like.external_id for like in likes]
-        already_liked = curr_user_liked_recipe_ids.count(id) > 0
+        already_liked = True if curr_user_liked_recipe_ids.count(id) > 0 else False
 
         hashtags = recipe['dishTypes']
         all_comments = Comment.query.filter(Comment.external_id == id).all()
@@ -331,16 +298,15 @@ def get_recipe_details(id):
         recipes_base_url = 'https://spoonacular.com/recipeImages/'
         similar_recipes = SpoonacularAPI.get_similar_recipe_by_id(id)
 
-        return render_template(
-            "/recipes/recipe_details.html",
-            recipe=recipe,
-            hashtags=hashtags,
-            already_liked=already_liked,
-            all_comments=all_comments,
-            ingredients_base_url=ingredients_base_url,
-            similar_recipes=similar_recipes,
-            recipes_base_url=recipes_base_url
-        )
+        return render_template("/recipes/recipe_details.html",
+                               recipe=recipe,
+                               hashtags=hashtags,
+                               already_liked=already_liked,
+                               all_comments=all_comments,
+                               ingredients_base_url=ingredients_base_url,
+                               similar_recipes=similar_recipes,
+                               recipes_base_url=recipes_base_url
+                               )
 
 
 @app.route("/recipe/<int:id>/like", methods=['POST'])
@@ -406,7 +372,7 @@ def add_comment_to_recipe(id):
         db.session.add(comment)
         db.session.commit()
         flash("Added comment", "success")
-        return redirect(f"/recipe/{id}")
+        return redirect(f"/recipe/{id}")        
 
 
 @app.errorhandler(404)
@@ -426,4 +392,3 @@ def add_api_recipe_posts_to_dummyAPI_user(apiPostID, recipeObj):
     db.session.merge(recipe_post)
     db.session.commit()
 
-# setUp()
