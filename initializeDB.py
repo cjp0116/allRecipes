@@ -1,4 +1,4 @@
-from app import setUp, app
-from models import connect_db
-connect_db(app)
-setUp()
+from app import app
+from models import db
+db.drop_all()
+db.create_all()
